@@ -6,9 +6,7 @@ def canUnlockAll(boxes):
     '''Function that determines if a list of boxes can be opened'''
     lenList = len(boxes)
     boxesNumbersList = []
-    boxesNumbersListCopy = []
     boxNumber = 1
-    canUnlock = True
 
     for i in range(lenList):
         boxesNumbersList.append(i)
