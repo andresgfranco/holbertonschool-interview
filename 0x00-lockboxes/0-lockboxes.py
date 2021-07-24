@@ -21,7 +21,7 @@ def canUnlockAll(boxes):
                 j = j+1
             if j == lenList:
                 break
-            if boxNumber in keyFinder and len(boxes[j]) > 0:
+            if boxNumber in boxes[j] and len(boxes[j]) > 0:
                 boxesNumbersList[i] = "opened"
                 break
         boxNumber = boxNumber + 1
