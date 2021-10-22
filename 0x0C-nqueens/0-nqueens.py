@@ -1,90 +1,80 @@
 #!/usr/bin/python3
+""" The N queens puzzle is the challenge of placing N
+     non-attacking queens on an N×N chessboard.
+     Write a program that solves the N queens problem."""
+
+import sys
 
 
-from sys import argv
-
-
-if len(argv) != 2:
+if len(sys.argv) != 2:
     print("Usage: nqueens N")
     exit(1)
-
-n_queens = argv[1]
-
-try:
-    n_queens = int(n_queens)
-except ValueError:
+if not sys.argv[1].isdigit():
     print("N must be a number")
     exit(1)
-
-if n_queens < 4:
+if int(sys.argv[1]) < 4:
     print("N must be at least 4")
     exit(1)
+N = int(sys.argv[1])
+board = [[0 for i in range(N)]for j in range(N)]
+k = 1
 
-non_attacking_queens = []
-rows_attacked = []
-cols_attacked = []
+
+def print_sol(board):
+    """ Method Print"""
+    global k
+    k = k + 1
+    S = []
+    for i in range(N):
+        for j in range(N):
+            if board[i][j] == 1:
+                S.append([i, j])
+    print(S)
 
 
-def is_safe(new_queen):
-    if new_queen[0] in cols_attacked:
-        return False
-    if new_queen[1] in rows_attacked:
-        return False
-
-    """ Checks diagonal up left """
-    i = new_queen[0]
-    j = new_queen[1]
-    while i >= 0 and j >= 0:
-        if [i, j] in non_attacking_queens:
+def isSafe(board, row, col):
+    """ Method IsSafe """
+    for i in range(col):
+        if (board[row][i]):
             return False
-
+    i = row
+    j = col
+    while i >= 0 and j >= 0:
+        if(board[i][j]):
+            return False
         i -= 1
         j -= 1
-
-    """ Checks diagonal up right """
-    i = new_queen[0]
-    j = new_queen[1]
-    while j < n_queens and i >= 0:
-        if [i, j] in non_attacking_queens:
+    i = row
+    j = col
+    while j >= 0 and i < N:
+        if(board[i][j]):
             return False
-
-        i -= 1
-        j += 1
-
+        i = i + 1
+        j = j - 1
     return True
 
 
-def search_queens(col_start):
-    for i in range(n_queens):
-        if i != 0:
-            col_start = 0
-        for j in range(col_start, n_queens):
-            if [i, j] not in non_attacking_queens:
-                if is_safe([i, j]):
-                    non_attacking_queens.append([i, j])
-                    cols_attacked.append(i)
-                    rows_attacked.append(j)
-
-    return non_attacking_queens
-
-
-def finds_all_possibilities():
-    col_start = 0
-
-    while True:
-        non_attacking_queens.clear()
-        rows_attacked.clear()
-        cols_attacked.clear()
-        possible_solution = search_queens(col_start)
-        """ print(possible_solution) """
-
-        if len(possible_solution) == n_queens:
-            print(possible_solution)
-
-        col_start += 1
-
-        if col_start == n_queens:
-            break
+def solving(board, col):
+    """ Method Solving """
+    if (col == N):
+        print_sol(board)
+        return True
+    res = False
+    for i in range(N):
+        if (isSafe(board, i, col)):
+            board[i][col] = 1
+            res = solving(board, col + 1) or res
+            board[i][col] = 0
+    return res
 
 
-finds_all_possibilities()
+def solve():
+    """ Method Solve"""
+    board = [[0 for j in range(N)]for i in range(N)]
+    if (solving(board, 0) is False):
+        print("Solution does not exist")
+        return
+    return
+
+
+solve()
